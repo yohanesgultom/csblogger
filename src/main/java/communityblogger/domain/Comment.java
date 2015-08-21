@@ -1,5 +1,8 @@
 package communityblogger.domain;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /*
  * Use the Apache Commons library for implementing equals() and hasCode(). 
  * Apache Commons provides utility classes that simplify the implementation of 
@@ -42,11 +45,13 @@ import org.joda.time.DateTime;
  * @author Ian Warren
  *
  */
+@XmlRootElement(name = "comment")
 public class Comment implements Comparable<Comment> {
 	private DateTime _timestamp;
 	private String _content;
 	private User _author;
-	
+
+	public Comment() {}
 	
 	/**
 	 * Creates a Comment object.
@@ -65,6 +70,7 @@ public class Comment implements Comparable<Comment> {
 	 * Returns the time at which this Comment was made.
 	 * 
 	 */
+	@XmlElement
 	public DateTime getTimePosted() {
 		return _timestamp;
 	}
@@ -73,6 +79,7 @@ public class Comment implements Comparable<Comment> {
 	 * Returns this Comment's content.
 	 * 
 	 */
+	@XmlElement
 	public String getContent() {
 		return _content;
 	}
@@ -81,6 +88,7 @@ public class Comment implements Comparable<Comment> {
 	 * Returns this Comment's author.
 	 * 
 	 */
+	@XmlElement
 	public User getAuthor() {
 		return _author;
 	}

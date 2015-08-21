@@ -13,9 +13,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Cookie;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import communityblogger.domain.User;
+import communityblogger.dto.UserDTO;
 
 // TO DO:
 // Configure the relative URI path for this resource.
@@ -43,11 +45,17 @@ public interface BloggerResource {
 	 * can be invoked prior to executing each unit test.
 	 */
 	@PUT
-	@Produces("application/xml")
+	@Produces(MediaType.APPLICATION_XML)
 	void initialiseContent();
 	
+	@PUT
+	@Path("createUser")
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_XML)
+	Response createUser(UserDTO newUserDTO);
+	
 	@GET
-	@Produces("application/xml")
-	@Path("/retrieveUser")
-	User retrieveUser();
+	@Path("retrieveUser/{username}")
+	@Produces(MediaType.APPLICATION_XML)
+	Response retrieveUser(@PathParam("username")String username);
 }

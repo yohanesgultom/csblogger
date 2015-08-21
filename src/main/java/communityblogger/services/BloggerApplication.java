@@ -17,8 +17,8 @@ public class BloggerApplication extends Application {
 		// TO DO: 
 		// Populate the _singletons and _classes sets with a resource instance 
 		// and any component classes your application needs.
-		BloggerResource bloggerResource = new BloggerResourceImpl();
-		_singletons.add(bloggerResource);
+		_singletons.add(new BloggerResourceImpl());
+		_classes.add(BloggerResolver.class);
 	}
 
 	@Override

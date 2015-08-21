@@ -80,7 +80,6 @@ public class User {
 	 * Returns this User's username.
 	 * 
 	 */
-	@XmlElement
 	public String getUsername() {
 		return _username;
 	}
@@ -89,7 +88,6 @@ public class User {
 	 * Returns this User's last name.
 	 * 
 	 */
-	@XmlElement
 	public String getLastname() {
 		return _lastname;
 	}
@@ -98,7 +96,6 @@ public class User {
 	 * Returns this User's first name.
 	 * 
 	 */
-	@XmlElement
 	public String getFirstname() {
 		return _firstname;
 	}
@@ -211,4 +208,19 @@ public class User {
 		return buffer.toString();
 	}
 	
+	@XmlElement
+	public void setUsername(String username) {
+		this._username = username;
+	}
+	
+	@XmlElement
+	public void setFirstname(String firstname) {
+		this._firstname = firstname;
+	}
+
+	@XmlElement
+	public void setLastname(String lastname) {
+		this._lastname = lastname;
+	}
+
 }

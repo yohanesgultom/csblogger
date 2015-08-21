@@ -4,6 +4,10 @@ import javax.ws.rs.ext.ContextResolver;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
+import communityblogger.domain.BlogEntry;
+import communityblogger.domain.Comment;
+import communityblogger.domain.User;
+
 public class BloggerResolver implements ContextResolver<JAXBContext>{
 	private JAXBContext _context;
 	
@@ -11,7 +15,11 @@ public class BloggerResolver implements ContextResolver<JAXBContext>{
 	// Add to the _classes array the classes whose object are to be marshalled/
 	// unmarshalled to/from XML. Objects of these class will be exchanged by
 	// clients and your Web service.
-	private Class<?>[] _classes = {  };
+	private Class<?>[] _classes = { 
+			User.class,
+			BlogEntry.class,
+			Comment.class
+	};
 	
 	public BloggerResolver() {
 		try {

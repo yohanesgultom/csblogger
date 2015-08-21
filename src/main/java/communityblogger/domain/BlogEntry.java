@@ -4,6 +4,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /*
  * Use the Apache Commons library for implementing equals() and hasCode(). 
  * Apache Commons provides utility classes that simplify the implementation of 
@@ -53,6 +56,7 @@ import org.joda.time.DateTime;
  * @author Ian Warren
  *
  */
+@XmlRootElement(name = "blogEntry")
 public class BlogEntry {
 	private Long _id;
 	private DateTime _timestamp;
@@ -100,7 +104,8 @@ public class BlogEntry {
 	/**
 	 * Returns the unique ID of this BlogEntry.
 	 * 
-	 */
+	 */	
+	@XmlElement
 	public Long getId() {
 		return _id;
 	}
@@ -109,6 +114,7 @@ public class BlogEntry {
 	 * Returns the date/time at which this BlogEntry was posted.
 	 * 
 	 */
+	@XmlElement
 	public DateTime getTimePosted() {
 		return _timestamp;
 	}
@@ -117,6 +123,7 @@ public class BlogEntry {
 	 * Returns this BlogEntry's content.
 	 * 
 	 */
+	@XmlElement
 	public String getContent() {
 		return _content;
 	}
@@ -125,6 +132,7 @@ public class BlogEntry {
 	 * Returns this BlogEntry's set of keywords. 
 	 * 
 	 */
+	@XmlElement
 	public Set<String> getKeywords() {
 		// Return an unmodifiable set so that contents can't be changed.
 		return Collections.unmodifiableSet(_keywords);
@@ -134,6 +142,7 @@ public class BlogEntry {
 	 * Returns this BlogEntry's author.
 	 * 
 	 */
+	@XmlElement
 	public User getAuthor() {
 		return _author;
 	}
@@ -142,6 +151,7 @@ public class BlogEntry {
 	 * Returns this BlogEntry's set of Comments.
 	 * 
 	 */
+	@XmlElement
 	public Set<Comment> getComments() {
 		return Collections.unmodifiableSet(_comments);
 	}
