@@ -6,12 +6,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 
 import communityblogger.domain.BlogEntry;
 import communityblogger.domain.Comment;
@@ -164,8 +166,34 @@ public class BloggerResourceImpl implements BloggerResource {
 
 	@Override
 	public Response retrieveBlogEntries(@QueryParam("author")String author, @QueryParam("maxCount")Integer maxCount, @QueryParam("minTime")String minTime, @QueryParam("maxTime")String maxTime, @QueryParam("maxBlogId")Integer maxBlogId, @QueryParam("minBlogId")Integer minBlogId) {
-		BlogEntriesDTO blogEntries = new BlogEntriesDTO(new HashSet<BlogEntry>(this._blogEntries.values()), true); 
-		return Response.ok(blogEntries).build();
+		Set<BlogEntry> blogEntries = new HashSet<BlogEntry>();
+		int count = 0;
+		for (BlogEntry blogEntry : this._blogEntries.values()) {
+			if (maxCount != null && count >= maxCount) break;
+			if (author != null && !blogEntry.getAuthor().getUsername().equals(author)) continue;
+			if (minTime != null) {
+				try {
+					DateTime minDateTime = new DateTime(minTime);
+					if (minDateTime != null && blogEntry.getTimePosted().isBefore(minDateTime.getMillis())) continue; 
+				} catch (Exception e) {
+					// continue
+				}
+			}
+			if (maxTime != null) {
+				try {
+					DateTime maxDateTime = new DateTime(maxTime);
+					if (maxDateTime != null && blogEntry.getTimePosted().isAfter(maxDateTime.getMillis())) continue;					
+				} catch (Exception e) {
+					// continue
+				}
+			}
+			if (minBlogId != null && minBlogId < blogEntry.getId()) continue;
+			if (maxBlogId != null && maxBlogId > blogEntry.getId()) continue;
+			blogEntries.add(blogEntry);
+			count++;
+		}
+		BlogEntriesDTO blogEntriesDTO = new BlogEntriesDTO(blogEntries, true); 
+		return Response.ok(blogEntriesDTO).build();
 	}
 		
 }

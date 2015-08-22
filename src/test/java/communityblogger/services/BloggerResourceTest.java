@@ -20,7 +20,6 @@ import communityblogger.domain.Comment;
 import communityblogger.domain.User;
 import communityblogger.dto.BlogEntryDTO;
 import communityblogger.dto.CommentDTO;
-import communityblogger.dto.CommentsDTO;
 import communityblogger.dto.UserDTO;
 
 public class BloggerResourceTest {
