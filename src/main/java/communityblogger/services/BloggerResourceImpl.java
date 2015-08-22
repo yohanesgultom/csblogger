@@ -3,7 +3,9 @@ package communityblogger.services;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -15,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import communityblogger.domain.BlogEntry;
 import communityblogger.domain.User;
+import communityblogger.dto.BlogEntryDTO;
 import communityblogger.dto.UserDTO;
 
 /**
@@ -40,7 +43,7 @@ public class BloggerResourceImpl implements BloggerResource {
 	public BloggerResourceImpl() {
 		// TO DO:
 		// Initialise instance variables.
-		this.initialiseContent();
+		this.initialiseContent();		
 	}
 
 	public void initialiseContent() {
@@ -49,9 +52,14 @@ public class BloggerResourceImpl implements BloggerResource {
 		// the same same as when the Web service was initially created.
 		this._users = new HashMap<String, User>();
 		this._blogEntries = new HashMap<Long, BlogEntry>();
-		this._idCounter = new AtomicLong(0);
+		this._idCounter = new AtomicLong(0);		
+		// TO DO remove
+		User user = new User("user1", "one", "first");
+		this.createUser(new UserDTO(user));			
+		BlogEntry blogEntry = new BlogEntry("This is a test blog entry", new HashSet<String>(Arrays.asList(new String[]{"test","unimportant"})));
+		this.createBlogEntry(user.getUsername(), new BlogEntryDTO(blogEntry));
 	}
-	
+		
 	// TO DO:
 	// Implement BloggerResource methods for the service contract.
 	@Override
@@ -66,6 +74,7 @@ public class BloggerResourceImpl implements BloggerResource {
 				return Response.status(409).build();
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			return Response.serverError().entity(e.getMessage()).build();
 		}
 	}
@@ -80,4 +89,36 @@ public class BloggerResourceImpl implements BloggerResource {
 		}
 	}
 	
+	@Override
+	public Response createBlogEntry(String username, BlogEntryDTO blogEntryDTO) {
+		try {
+			BlogEntry blogEntry = blogEntryDTO.getBlogEntry();
+			User existing = this._users.get(username);			
+			if (existing == null) throw new IllegalArgumentException("Invalid username");
+			blogEntry.setKeywords(blogEntryDTO.getKeywords());
+			blogEntry.setId(this._idCounter.getAndIncrement());
+			existing.addBlogEntry(blogEntry);
+			this._blogEntries.put(blogEntry.getId(), blogEntry);
+			return Response.created(new URI("/services/blogger/retrieveBlogEntry/" + blogEntry.getId())).build();
+		} catch (IllegalArgumentException e) {
+			return Response.status(412).entity(e.getMessage()).build();
+		} catch (Exception e) {
+			return Response.serverError().entity(e.getMessage()).build();
+		}			
+	}
+	
+	@Override
+	public Response retrieveBlogEntry(Long id) {
+		try {
+			if (id == null) throw new IllegalArgumentException("Empty id");
+			BlogEntry blogEntry = this._blogEntries.get(id);
+			if (blogEntry == null) throw new IllegalArgumentException("Invalid id");
+			return Response.ok(blogEntry).build();
+		} catch (IllegalArgumentException e) {
+			return Response.status(404).entity(e.getMessage()).build();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Response.serverError().entity(e.getStackTrace()).build();
+		}		
+	}
 }

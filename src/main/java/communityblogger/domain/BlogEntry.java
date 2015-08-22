@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /*
@@ -105,7 +106,6 @@ public class BlogEntry {
 	 * Returns the unique ID of this BlogEntry.
 	 * 
 	 */	
-	@XmlElement
 	public Long getId() {
 		return _id;
 	}
@@ -114,7 +114,6 @@ public class BlogEntry {
 	 * Returns the date/time at which this BlogEntry was posted.
 	 * 
 	 */
-	@XmlElement
 	public DateTime getTimePosted() {
 		return _timestamp;
 	}
@@ -123,7 +122,6 @@ public class BlogEntry {
 	 * Returns this BlogEntry's content.
 	 * 
 	 */
-	@XmlElement
 	public String getContent() {
 		return _content;
 	}
@@ -132,7 +130,6 @@ public class BlogEntry {
 	 * Returns this BlogEntry's set of keywords. 
 	 * 
 	 */
-	@XmlElement
 	public Set<String> getKeywords() {
 		// Return an unmodifiable set so that contents can't be changed.
 		return Collections.unmodifiableSet(_keywords);
@@ -142,7 +139,6 @@ public class BlogEntry {
 	 * Returns this BlogEntry's author.
 	 * 
 	 */
-	@XmlElement
 	public User getAuthor() {
 		return _author;
 	}
@@ -151,7 +147,6 @@ public class BlogEntry {
 	 * Returns this BlogEntry's set of Comments.
 	 * 
 	 */
-	@XmlElement
 	public Set<Comment> getComments() {
 		return Collections.unmodifiableSet(_comments);
 	}
@@ -217,7 +212,7 @@ public class BlogEntry {
 			_keywords.add(keyword);
 		}
 	}
-	
+		
 	/**
 	 * Sets the timestamp for this BlogEntry.
 	 * 

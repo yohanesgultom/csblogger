@@ -53,7 +53,7 @@ public class User {
 	
 	private Set<BlogEntry> _blogEntriesPosted;
 	private Set<Comment> _commentsPosted;
-
+	
 	public User() {}
 	
 	/**

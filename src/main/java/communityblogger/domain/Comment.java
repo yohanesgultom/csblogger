@@ -1,5 +1,6 @@
 package communityblogger.domain;
 
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -45,6 +46,7 @@ import org.joda.time.DateTime;
  * @author Ian Warren
  *
  */
+
 @XmlRootElement(name = "comment")
 public class Comment implements Comparable<Comment> {
 	private DateTime _timestamp;

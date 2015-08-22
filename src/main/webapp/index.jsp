@@ -1,11 +1,8 @@
 <html>
 <head>
-	<title>Webservice Demo</title>
+	<title>CS blogger webservice demo</title>
 </head>
 <body>
-	<h1>Webservice Demo</h1>
-	<ol>
-		<li><a href="services/blogger/retrieveUser">services/blogger/retrieveUser/user1</a></li>
-	</ol>
+	<h1>CS blogger webservice demo</h1>
 </body>
 </html>

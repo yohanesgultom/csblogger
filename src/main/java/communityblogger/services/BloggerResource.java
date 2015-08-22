@@ -16,7 +16,9 @@ import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import communityblogger.domain.BlogEntry;
 import communityblogger.domain.User;
+import communityblogger.dto.BlogEntryDTO;
 import communityblogger.dto.UserDTO;
 
 // TO DO:
@@ -58,4 +60,16 @@ public interface BloggerResource {
 	@Path("retrieveUser/{username}")
 	@Produces(MediaType.APPLICATION_XML)
 	Response retrieveUser(@PathParam("username")String username);
+	
+	@PUT
+	@Path("createBlogEntry")
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_XML)
+	Response createBlogEntry(@CookieParam("username")String username, BlogEntryDTO blogEntryDTO);
+	
+	@GET
+	@Path("retrieveBlogEntry/{id}")
+	@Produces(MediaType.APPLICATION_XML)
+	Response retrieveBlogEntry(@PathParam("id")Long id);
+
 }
