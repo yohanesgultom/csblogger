@@ -16,8 +16,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import communityblogger.domain.BlogEntry;
+import communityblogger.domain.Comment;
 import communityblogger.domain.User;
 import communityblogger.dto.BlogEntryDTO;
+import communityblogger.dto.CommentDTO;
+import communityblogger.dto.CommentsDTO;
 import communityblogger.dto.UserDTO;
 
 public class BloggerResourceTest {
@@ -69,9 +72,19 @@ public class BloggerResourceTest {
 			BlogEntryDTO res = (BlogEntryDTO) unmarshaller.unmarshal(new StreamSource(new StringReader(xml)));
 			assertEquals("This is a test blog entry", res.getContent());
 		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
+	}
+	
+	@Test
+	public void createCommentTest() {
+		CommentDTO commentDTO = new CommentDTO(new Comment("This is an example of comment"));
+		assertEquals(200, bloggerResource.createComment("user1", new Long(1), commentDTO).getStatus());
+	}
+	
+	@Test
+	public void retrieveCommentsTest() {
+		assertEquals(200, bloggerResource.retrieveComments(new Long(1)).getStatus());
 	}
 }

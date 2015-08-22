@@ -21,6 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.joda.time.DateTime;
 
 /**
  * Class to represent users in the Community Blogger Web service. A User object
@@ -149,6 +150,7 @@ public class User {
 			throw new IllegalArgumentException();
 		}
 		_commentsPosted.add(comment);
+		comment.setTimestamp(new DateTime());
 		comment.setAuthor(this);
 	}
 	

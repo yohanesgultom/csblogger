@@ -17,8 +17,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import communityblogger.domain.BlogEntry;
+import communityblogger.domain.Comment;
 import communityblogger.domain.User;
 import communityblogger.dto.BlogEntryDTO;
+import communityblogger.dto.CommentDTO;
+import communityblogger.dto.CommentsDTO;
 import communityblogger.dto.UserDTO;
 
 // TO DO:
@@ -72,4 +75,15 @@ public interface BloggerResource {
 	@Produces(MediaType.APPLICATION_XML)
 	Response retrieveBlogEntry(@PathParam("id")Long id);
 
+	@PUT
+	@Path("createComment/{id}")
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_XML)
+	Response createComment(@CookieParam("username")String username, @PathParam("id")Long id, CommentDTO commentDTO);
+
+	@GET
+	@Path("retrieveComments/{id}")
+	@Produces(MediaType.APPLICATION_XML)
+	Response retrieveComments(@PathParam("id")Long id);
+	
 }

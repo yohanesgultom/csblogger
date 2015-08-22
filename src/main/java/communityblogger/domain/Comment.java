@@ -1,8 +1,8 @@
 package communityblogger.domain;
 
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /*
  * Use the Apache Commons library for implementing equals() and hasCode(). 
@@ -29,6 +29,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  */
 import org.joda.time.DateTime;
 
+import communityblogger.domain.adapter.DateTimeAdapter;
+
 /**
  * Class to represent a comment made by a User on a BlogEntry. A Comment object 
  * holds the following data:
@@ -46,7 +48,6 @@ import org.joda.time.DateTime;
  * @author Ian Warren
  *
  */
-
 @XmlRootElement(name = "comment")
 public class Comment implements Comparable<Comment> {
 	private DateTime _timestamp;
@@ -54,6 +55,10 @@ public class Comment implements Comparable<Comment> {
 	private User _author;
 
 	public Comment() {}
+	
+	public Comment(String content) {
+		this(content, new DateTime());
+	}
 	
 	/**
 	 * Creates a Comment object.
@@ -73,6 +78,7 @@ public class Comment implements Comparable<Comment> {
 	 * 
 	 */
 	@XmlElement
+	@XmlJavaTypeAdapter(type=DateTime.class, value=DateTimeAdapter.class)
 	public DateTime getTimePosted() {
 		return _timestamp;
 	}

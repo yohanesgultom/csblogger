@@ -163,7 +163,15 @@ public class BlogEntry {
 		}
 		_comments.add(comment);
 	}
-	
+
+	public void addComment(Comment comment, User author) {
+		if(_comments.contains(comment)) {
+			throw new IllegalArgumentException();
+		}
+		author.addComment(comment);
+		_comments.add(comment);
+	}
+
 	/**
 	 * Sets the unique ID for this BlogEntry.
 	 * 

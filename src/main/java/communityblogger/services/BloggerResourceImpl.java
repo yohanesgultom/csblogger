@@ -2,7 +2,6 @@ package communityblogger.services;
 
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,12 +11,13 @@ import java.util.concurrent.atomic.AtomicLong;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import communityblogger.domain.BlogEntry;
+import communityblogger.domain.Comment;
 import communityblogger.domain.User;
 import communityblogger.dto.BlogEntryDTO;
+import communityblogger.dto.CommentDTO;
+import communityblogger.dto.CommentsDTO;
 import communityblogger.dto.UserDTO;
 
 /**
@@ -53,10 +53,14 @@ public class BloggerResourceImpl implements BloggerResource {
 		this._users = new HashMap<String, User>();
 		this._blogEntries = new HashMap<Long, BlogEntry>();
 		this._idCounter = new AtomicLong(0);		
-		// TO DO remove
+		// TO DO remove later
 		User user = new User("user1", "one", "first");
+		User user2 = new User("user2", "two", "second");
 		this.createUser(new UserDTO(user));			
+		this.createUser(new UserDTO(user2));			
 		BlogEntry blogEntry = new BlogEntry("This is a test blog entry", new HashSet<String>(Arrays.asList(new String[]{"test","unimportant"})));
+		blogEntry.addComment(new Comment("This is an example of comment"), user2);
+		blogEntry.addComment(new Comment("This is another meaningless comment"), user2);
 		this.createBlogEntry(user.getUsername(), new BlogEntryDTO(blogEntry));
 	}
 		
@@ -121,4 +125,40 @@ public class BloggerResourceImpl implements BloggerResource {
 			return Response.serverError().entity(e.getStackTrace()).build();
 		}		
 	}
+
+	@Override
+	public Response createComment(String username, Long id, CommentDTO commentDTO) {
+		try {
+			if (id == null) throw new IllegalArgumentException("Empty id");		
+			User existing = this._users.get(username);			
+			if (existing == null) throw new IllegalArgumentException("Invalid username");
+			BlogEntry blogEntry = this._blogEntries.get(id);
+			if (blogEntry == null) throw new javax.ws.rs.NotFoundException("Invalid id");
+			Comment comment = commentDTO.getComment();
+			blogEntry.addComment(comment, existing);
+			return Response.ok().build();
+		} catch (javax.ws.rs.NotFoundException e) {
+			return Response.status(404).entity(e.getMessage()).build();
+		} catch (IllegalArgumentException e) {
+			return Response.status(412).entity(e.getMessage()).build();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Response.serverError().entity(e.getStackTrace()).build();
+		}
+	}
+
+	@Override
+	public Response retrieveComments(Long id) {
+		try {
+			if (id == null) throw new IllegalArgumentException("Empty id");		
+			BlogEntry blogEntry = this._blogEntries.get(id);
+			if (blogEntry == null) throw new javax.ws.rs.NotFoundException("Invalid id");			
+			return Response.ok(new CommentsDTO(blogEntry.getComments())).build();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Response.status(404).entity(e.getMessage()).build();
+		}
+	}
+	
+	
 }
