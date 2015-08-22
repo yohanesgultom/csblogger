@@ -34,7 +34,7 @@ public class BloggerResourceTest {
 		bloggerResource.createUser(new UserDTO(user));			
 
 		BlogEntry blogEntry = new BlogEntry("This is a test blog entry", new HashSet<String>(Arrays.asList(new String[]{"test","unimportant"})));
-		bloggerResource.createBlogEntry(user.getUsername(), new BlogEntryDTO(blogEntry));
+		bloggerResource.createBlogEntry(user.getUsername(), new BlogEntryDTO(blogEntry, true));
 	}
 
 	@After
@@ -55,7 +55,7 @@ public class BloggerResourceTest {
 	@Test
 	public void createBlogEntry() {
 		BlogEntry blogEntry = new BlogEntry("This is a test blog entry", new HashSet<String>(Arrays.asList(new String[]{"test","unimportant"})));
-		assertEquals(201, bloggerResource.createBlogEntry("user1", new BlogEntryDTO(blogEntry)).getStatus());
+		assertEquals(201, bloggerResource.createBlogEntry("user1", new BlogEntryDTO(blogEntry, true)).getStatus());
 	}
 	
 	@Test

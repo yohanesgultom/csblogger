@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang3.StringUtils;
@@ -15,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import communityblogger.domain.BlogEntry;
 import communityblogger.domain.Comment;
 import communityblogger.domain.User;
+import communityblogger.dto.BlogEntriesDTO;
 import communityblogger.dto.BlogEntryDTO;
 import communityblogger.dto.CommentDTO;
 import communityblogger.dto.CommentsDTO;
@@ -61,7 +63,7 @@ public class BloggerResourceImpl implements BloggerResource {
 		BlogEntry blogEntry = new BlogEntry("This is a test blog entry", new HashSet<String>(Arrays.asList(new String[]{"test","unimportant"})));
 		blogEntry.addComment(new Comment("This is an example of comment"), user2);
 		blogEntry.addComment(new Comment("This is another meaningless comment"), user2);
-		this.createBlogEntry(user.getUsername(), new BlogEntryDTO(blogEntry));
+		this.createBlogEntry(user.getUsername(), new BlogEntryDTO(blogEntry, true));
 	}
 		
 	// TO DO:
@@ -117,7 +119,7 @@ public class BloggerResourceImpl implements BloggerResource {
 			if (id == null) throw new IllegalArgumentException("Empty id");
 			BlogEntry blogEntry = this._blogEntries.get(id);
 			if (blogEntry == null) throw new IllegalArgumentException("Invalid id");
-			return Response.ok(blogEntry).build();
+			return Response.ok(new BlogEntryDTO(blogEntry, false)).build();
 		} catch (IllegalArgumentException e) {
 			return Response.status(404).entity(e.getMessage()).build();
 		} catch (Exception e) {
@@ -159,6 +161,11 @@ public class BloggerResourceImpl implements BloggerResource {
 			return Response.status(404).entity(e.getMessage()).build();
 		}
 	}
-	
-	
+
+	@Override
+	public Response retrieveBlogEntries(@QueryParam("author")String author, @QueryParam("maxCount")Integer maxCount, @QueryParam("minTime")String minTime, @QueryParam("maxTime")String maxTime, @QueryParam("maxBlogId")Integer maxBlogId, @QueryParam("minBlogId")Integer minBlogId) {
+		BlogEntriesDTO blogEntries = new BlogEntriesDTO(new HashSet<BlogEntry>(this._blogEntries.values()), true); 
+		return Response.ok(blogEntries).build();
+	}
+		
 }

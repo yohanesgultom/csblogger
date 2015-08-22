@@ -1,27 +1,18 @@
 package communityblogger.services;
 
-import java.util.Set;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.CookieParam;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.container.AsyncResponse;
-import javax.ws.rs.container.Suspended;
-import javax.ws.rs.core.Cookie;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import communityblogger.domain.BlogEntry;
-import communityblogger.domain.Comment;
-import communityblogger.domain.User;
 import communityblogger.dto.BlogEntryDTO;
 import communityblogger.dto.CommentDTO;
-import communityblogger.dto.CommentsDTO;
 import communityblogger.dto.UserDTO;
 
 // TO DO:
@@ -85,5 +76,11 @@ public interface BloggerResource {
 	@Path("retrieveComments/{id}")
 	@Produces(MediaType.APPLICATION_XML)
 	Response retrieveComments(@PathParam("id")Long id);
-	
+
+	@GET
+	@Path("retrieveBlogEntries")
+	@Produces(MediaType.APPLICATION_XML)
+	@Consumes(MediaType.APPLICATION_XML)
+	Response retrieveBlogEntries(@QueryParam("author")String author, @QueryParam("maxCount")Integer maxCount, @QueryParam("minTime")String minTime, @QueryParam("maxTime")String maxTime, @QueryParam("maxBlogId")Integer maxBlogId, @QueryParam("minBlogId")Integer minBlogId);
+
 }

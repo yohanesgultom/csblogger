@@ -15,15 +15,18 @@ import communityblogger.domain.User;
 public class BlogEntryDTO {
 	private BlogEntry blogEntry;
 	private Set<String> keywords;
+	private boolean withoutComments = true;
 	
 	public BlogEntryDTO() {
 		this.blogEntry = new BlogEntry();
 		this.keywords = new HashSet<String>();
+		this.withoutComments = true;
 	}
 
-	public BlogEntryDTO(BlogEntry blogEntry) {
-		this.blogEntry = blogEntry;
+	public BlogEntryDTO(BlogEntry blogEntry, boolean withComments) {		
+		this.blogEntry = blogEntry;		
 		this.keywords = new HashSet<String>(blogEntry.getKeywords());
+		this.withoutComments = withComments;
 	}
 
 	public BlogEntry getBlogEntry() {
@@ -40,7 +43,7 @@ public class BlogEntryDTO {
 	}
 
 	public Set<Comment> getComments() {
-		return new HashSet<Comment>(this.blogEntry.getComments());
+		return (this.withoutComments) ? new HashSet<Comment>(this.blogEntry.getComments()) : null;
 	}
 	
 	public Long getId() {
